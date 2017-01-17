@@ -77,7 +77,7 @@ def upgrade():
     sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('host_id', sa.String(length=36), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
-    sa.Column('values', sa.Text(length=16777215), nullable=True),
+    sa.Column('values', sa.Text(length=16777215).with_variant(db.Text(), 'postgresql'), nullable=True),
     sa.ForeignKeyConstraint(['host_id'], ['hosts.id'], ondelete='RESTRICT'),
     sa.PrimaryKeyConstraint('id')
     )
