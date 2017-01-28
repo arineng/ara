@@ -4,7 +4,8 @@
   {% if result is mapping %}
     {% if 'item' in result %}
       <{{ hdr }}>Item</{{ hdr }}>
-      <pre>{{ result.item |to_nice_json |safe |replace('\n', LITERAL_NEWLINE) }}</pre>
+      <pre>{{ result.item |to_nice_json |safe |replace('\n', """
+""") }}</pre>
     {% endif %}
 
     {% for attr in result.keys()|sort
@@ -14,19 +15,25 @@
         {% if result[attr] is string %}
           <pre>{{ result[attr] }}</pre>
         {% elif result[attr] is mapping or result[attr] is iterable%}
-          {% if diff in result[attr] %}
-            {% diff_before = result[attr]['diff']['before'].replace('\n', LITERAL_NEWLINE) }
-            {% diff_after = result[attr]['diff']['after'].replace('\n', LITERAL_NEWLINE) }
+          {% if attr == 'diff' %}
+            {% set diff_before = result[attr]['before'].replace('\\n', """
+""") %}
+            {% set diff_after = result[attr]['after'].replace('\\n', """
+""") %}
             <pre>{{ diff_before | diff(diff_after) }}</pre>
-          {% endif }
-          <pre>{{ result[attr] |to_nice_json |safe | }}</pre>
+          {% else %}
+	    <pre>{{ result[attr] |to_nice_json |safe | replace('\\n', """
+""") }}</pre>
+          {% endif %}
         {% else %}
-          <pre>{{ result |to_nice_json |safe |replace('\n', LITERAL_NEWLINE) }}</pre>
+          <pre>{{ result |to_nice_json |safe |replace('\\n', """
+""") }}</pre>
         {% endif %}
       {% endif %}
     {% endfor %}
   {% else %}
-    <pre>{{ result |to_nice_json |safe |replace('\n', LITERAL_NEWLINE) }}</pre>
+    <pre>{{ result |to_nice_json |safe |replace('\\n', """
+""") }}</pre>
   {% endif %}
 {% endmacro %}
 <!-- Header container -->
