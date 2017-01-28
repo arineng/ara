@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import difflib
 import os
 
 from jinja2 import Markup
@@ -81,3 +82,12 @@ def configure_template_filters(app):
         return highlight(Markup(code.rstrip()).unescape(),
                          YamlLexer(),
                          formatter)
+
+    @app.template_filter('diff')
+    def jinja_diff(before, after):
+        before = before.splitlines(1)
+        after = after.splitlines(1)
+
+        diff = difflib.unified_diff(before, after)
+
+        return ''.join(diff)

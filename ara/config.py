@@ -62,6 +62,8 @@ SQLALCHEMY_ECHO = get_config(config, 'ara', 'sqldebug', 'ARA_SQL_DEBUG',
                              DEFAULT_ARA_SQL_DEBUG)
 INSTALL_PATH = os.path.dirname(os.path.realpath(__file__))
 DB_MIGRATIONS = os.path.join(INSTALL_PATH, 'db')
+LITERAL_NEWLINE = """
+"""
 
 # Static generation
 FREEZER_RELATIVE_URLS = True
