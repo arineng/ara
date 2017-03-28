@@ -177,6 +177,34 @@ Integration tests:
    # website will be generated at /tmp/logs/build.
    ./run_tests.sh
 
+PostgreSQL integration tests:
+
+In order to test integration with PostgreSQL, you'll need to set a few environment variables:
+
+::
+
+   export ARA_TEST_PGSQL=1
+   export ARA_TEST_PGSQL_USER=postgres
+   export ARA_TEST_PGSQL_PASSWORD=foobar
+
+You'll also need development headers for PostgreSQL to build psycopg2, the defacto pgsql adapter for Python. Ubuntu provides them by:
+
+::
+
+   sudo apt install postgresql-server-dev-9.5
+
+If you need a quick and dirty PostgreSQL server to test against, you can use docker to spin one up:
+
+::
+
+   docker run --name ara_pgsql -e POSTGRES_PASSWORD=foobar -e POSTGRES_DB=ara -p 5432:5432 -d postgres:alpine
+
+Then, just invoke tests as normal:
+
+::
+
+   ./run_tests.sh
+
 More reading
 ------------
 
